@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="Real-time global weather dashboard with live updates, forecasts, and interactive maps">
+    <title>Global Weather Dashboard | Real-Time Climate Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p>Initializing Dashboard...</p>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div class="dashboard">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-cloud-sun"></i>
+                <span>Weather<span class="highlight">Flow</span></span>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-view="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-view="forecast">
+                    <i class="fas fa-calendar-week"></i>
+                    <span>Forecast</span>
+                </a>
+                <a href="#" class="nav-item" data-view="map">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Global Map</span>
+                </a>
+                <a href="#" class="nav-item" data-view="analytics">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="#" class="nav-item" data-view="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="connection-status" id="connectionStatus">
+                    <i class="fas fa-plug"></i>
+                    <span>Connecting...</span>
+                </div>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search cities... (e.g., London, Tokyo, New York)" autocomplete="off">
+                </div>
+                <div class="header-actions">
+                    <div class="unit-toggle" id="unitToggle">
+                        <button class="unit-btn active" data-unit="celsius">°C</button>
+                        <button class="unit-btn" data-unit="fahrenheit">°F</button>
+                    </div>
+                    <button class="refresh-btn" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <div class="user-menu">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard View -->
+            <div id="dashboardView" class="view active">
+                <!-- Stats Overview -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-city"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Cities</h3>
+                            <div class="stat-value" id="totalCities">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-thermometer-half"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Global Avg Temp</h3>
+                            <div class="stat-value" id="avgTemp">--°C</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Avg Humidity</h3>
+                            <div class="stat-value" id="avgHumidity">--%</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-wind"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Avg Wind Speed</h3>
+                            <div class="stat-value" id="avgWind">-- m/s</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add City Section -->
+                <div class="add-city-section">
+                    <div class="add-city-card">
+                        <i class="fas fa-plus-circle"></i>
+                        <input type="text" id="newCityInput" placeholder="Enter city name...">
+                        <button id="addCityBtn" class="btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Add City
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Weather Grid -->
+                <div class="weather-grid" id="weatherGrid">
+                    <div class="empty-state">
+                        <i class="fas fa-cloud-sun"></i>
+                        <h3>No Cities Added</h3>
+                        <p>Start by adding a city to track real-time weather data</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Forecast View -->
+            <div id="forecastView" class="view">
+                <div class="forecast-container">
+                    <h2 class="view-title">
+                        <i class="fas fa-calendar-week"></i>
+                        5-Day Weather Forecast
+                    </h2>
+                    <div class="city-selector">
+                        <select id="forecastCitySelect">
+                            <option value="">Select a city to view forecast</option>
+                        </select>
+                    </div>
+                    <div class="forecast-grid" id="forecastGrid">
+                        <div class="empty-state">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Select a city to view 5-day forecast</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map View -->
+            <div id="mapView" class="view">
+                <div class="map-container">
+                    <h2 class="view-title">
+                        <i class="fas fa-map-marked-alt"></i>
+                        Global Weather Map
+                    </h2>
+                    <div class="map-controls">
+                        <button class="map-layer-btn active" data-layer="temp">
+                            <i class="fas fa-thermometer-half"></i>
+                            Temperature
+                        </button>
+                        <button class="map-layer-btn" data-layer="precip">
+                            <i class="fas fa-cloud-rain"></i>
+                            Precipitation
+                        </button>
+                        <button class="map-layer-btn" data-layer="wind">
+                            <i class="fas fa-wind"></i>
+                            Wind
+                        </button>
+                    </div>
+                    <div id="weatherMap" class="weather-map"></div>
+                </div>
+            </div>
+
+            <!-- Analytics View -->
+            <div id="analyticsView" class="view">
+                <div class="analytics-container">
+                    <h2 class="view-title">
+                        <i class="fas fa-chart-line"></i>
+                        Weather Analytics
+                    </h2>
+                    <div class="analytics-grid">
+                        <div class="analytics-card">
+                            <h3>Temperature Trends</h3>
+                            <canvas id="tempTrendChart"></canvas>
+                        </div>
+                        <div class="analytics-card">
+                            <h3>Humidity Distribution</h3>
+                            <canvas id="humidityChart"></canvas>
+                        </div>
+                        <div class="analytics-card full-width">
+                            <h3>Historical Data</h3>
+                            <canvas id="historicalChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings View -->
+            <div id="settingsView" class="view">
+                <div class="settings-container">
+                    <h2 class="view-title">
+                        <i class="fas fa-cog"></i>
+                        Dashboard Settings
+                    </h2>
+                    <div class="settings-grid">
+                        <div class="settings-card">
+                            <h3>Weather Preferences</h3>
+                            <div class="setting-item">
+                                <label>Temperature Unit</label>
+                                <div class="setting-options">
+                                    <button class="setting-option active" data-setting="unit" data-value="celsius">Celsius (°C)</button>
+                                    <button class="setting-option" data-setting="unit" data-value="fahrenheit">Fahrenheit (°F)</button>
+                                </div>
+                            </div>
+                            <div class="setting-item">
+                                <label>Auto-Refresh Interval</label>
+                                <select id="refreshInterval">
+                                    <option value="30000">30 seconds</option>
+                                    <option value="60000">1 minute</option>
+                                    <option value="300000" selected>5 minutes</option>
+                                    <option value="600000">10 minutes</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <label>Theme</label>
+                                <div class="setting-options">
+                                    <button class="setting-option" data-setting="theme" data-value="light">Light</button>
+                                    <button class="setting-option" data-setting="theme" data-value="dark">Dark</button>
+                                    <button class="setting-option active" data-setting="theme" data-value="auto">Auto</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="settings-card">
+                            <h3>Data Management</h3>
+                            <div class="setting-item">
+                                <label>Export Data</label>
+                                <button id="exportDataBtn" class="btn-secondary">
+                                    <i class="fas fa-download"></i>
+                                    Export as JSON
+                                </button>
+                            </div>
+                            <div class="setting-item">
+                                <label>Clear All Data</label>
+                                <button id="clearDataBtn" class="btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                    Clear Dashboard
+                                </button>
+                            </div>
+                        </div>
+                        <div class="settings-card">
+                            <h3>API Information</h3>
+                            <div class="api-info">
+                                <p><strong>OpenWeatherMap API</strong></p>
+                                <p>Free tier: 60 calls/minute</p>
+                                <p>Last Sync: <span id="lastSyncTime">--</span></p>
+                                <p>API Status: <span id="apiStatus" class="status-badge">Active</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="app.js"></script>
+</body>
+</html>
