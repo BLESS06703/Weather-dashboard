@@ -3,7 +3,7 @@
 [![GitHub stars]#(https://img.shields.io/github/stars/YOUR_USERNAME/weather-dashboard)]#(https://github.com/YOUR_USERNAME/weather-dashboard/stargazers)
 [![GitHub forks]#(https://img.shields.io/github/forks/YOUR_USERNAME/weather-dashboard)](https://github.com/YOUR_USERNAME/weather-dashboard/network)
 [![GitHub issues](https://img.shields.io/github/issues/YOUR_USERNAME/weather-dashboard)](https://github.com/YOUR_USERNAME/weather-dashboard/issues)
-[![GitHub license](https://img.shields.io/github/license/YOUR_USERNAME/weather-dashboard)]#(https://github.com/YOUR_USERNAME/weather-dashboard/blob/main/LICENSE)
+[![GitHub license]#(https://img.shields.io/github/license/YOUR_USERNAME/weather-dashboard)]#(https://github.com/YOUR_USERNAME/weather-dashboard/blob/main/LICENSE)
 [![Website]#(https://img.shields.io/website?url=https%3A%2F%2FYOUR_USERNAME.github.io%2Fweather-dashboard)](https://YOUR_USERNAME.github.io/weather-dashboard)
 
 A powerful, real-time weather dashboard that brings global weather data to your fingertips. Track weather conditions across multiple cities with live updates, detailed forecasts, and beautiful visualizations.
