@@ -64,5 +64,5 @@ A powerful, real-time weather dashboard that brings global weather data to your 
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/YOUR_USERNAME/weather-dashboard.git
+git clone https://github.com/BLESS06703/weather-dashboard.git
 cd weather-dashboard
